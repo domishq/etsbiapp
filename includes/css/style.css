@@ -1,0 +1,14 @@
+.hide {
+  display: none;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+table {
+  border-spacing: 12px;
+}

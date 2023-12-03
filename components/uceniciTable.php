@@ -3,7 +3,7 @@ require('api/ucenik.php');
 $ucenici = getAllUcenici();
 ?>
 
-<table id="myTable" class="display">
+<table id="myTable" class="display nowrap" cellspacing="0" width="100%">
     <thead>
         <tr>
             <th>ID</th>

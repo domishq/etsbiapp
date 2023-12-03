@@ -6,7 +6,7 @@ if (isset($_GET['action'])) {
         case 'createUser':
             $name = $_POST['name'];
             $surname = $_POST['surname'];
-            $username = $_POST['username'];
+            $username = strtolower($_POST['username']);
             $password = $_POST['password'];
             $confirmPassword = $_POST['confirmPassword'];
 

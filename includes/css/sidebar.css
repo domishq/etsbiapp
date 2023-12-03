@@ -29,7 +29,7 @@ body {
   z-index: 10;
   position: fixed;
   width: 100%;
-  background-color: #2f323a;
+  background: linear-gradient(180deg, #3b3b3b 0%, #000 100%);
   display: flex;
   justify-content: space-between;
   overflow: auto;
@@ -42,8 +42,18 @@ body {
   display: flex;
 }
 
+.sidebar-item {
+  display: flex;
+  align-items: center;
+}
+
+.linkSelector {
+  visibility: hidden;
+  margin-left: 10px;
+}
+
 .sidebar-item a {
-  display: block;
+  display: inline-block;
   height: 64px;
   line-height: 64px;
   text-align: left;
@@ -53,14 +63,14 @@ body {
   text-decoration: none;
 }
 
-.sidebar-item span {
+/*.sidebar-item span {
   display: none;
-}
+}*/
 
-.sidebar-item.active,
+/*.sidebar-item.active,
 .sidebar-item:hover {
   background-color: #5093e1;
-}
+}*/
 
 @media (min-width: 48em) {
   .sidebar {

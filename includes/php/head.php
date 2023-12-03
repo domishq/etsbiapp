@@ -6,7 +6,8 @@
 
     <!-- Default -->
     <link rel="stylesheet" href="includes/css/style.css">
-    <link rel="stylesheet" href="includes/css/navbar.css">
+    <link rel="stylesheet" href="includes/css/sidebar.css">
+    <link rel="stylesheet" href="includes/css/dataTable.css">
 
     <!-- JQuery and dataTables -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
@@ -18,7 +19,14 @@
 </head>
 
 <body>
-
-<?php
-require_once('components/sidebar.php');
-?>
+    <div class="loader">
+        <div class="spinner-container" id="loader">
+            <div class="spinner-grow" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <div class="hide aplikacija">
+        <?php
+        require_once('components/sidebar.php');
+        ?>

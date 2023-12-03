@@ -5,12 +5,18 @@
     </ul>
     <ul class="sidebar-menu">
       <li class="sidebar-item" id="sidebarUsers">
+        <div class="linkSelector">
+          <img src="includes/img/icons/active.png" alt="active">
+        </div>
         <a href="users.php" class="sidebar-link">
           <i class="fa-regular fa-user"></i>
           <span>users</span>
         </a>
       </li>
       <li class="sidebar-item" id="sidebarUcenici">
+        <div class="linkSelector">
+          <img src="includes/img/icons/active.png" alt="active">
+        </div>
         <a href="ucenici.php" class="sidebar-link">
           <i class="fa fa-graduation-cap"></i>
           <span>ucenici</span>
