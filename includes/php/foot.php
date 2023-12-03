@@ -1,4 +1,4 @@
-    </div>
+</div>
 </div>
 
 <!-- JQuery and dataTables -->
@@ -11,5 +11,8 @@
     crossorigin="anonymous"></script>
 
 <script src="https://kit.fontawesome.com/28951eee1d.js" crossorigin="anonymous"></script>
+
+<script src="includes/js/script.js"></script>
 </body>
+
 </html>

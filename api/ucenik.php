@@ -1,9 +1,8 @@
-<?php 
-require 'database.php';
-if(isset($_GET['action']))
-{
+<?php
+include_once 'database.php';
+if (isset($_GET['action'])) {
     $action = $_GET['action'];
-    switch($action){
+    switch ($action) {
         case 'createUcenik':
             $name = $_POST['name'];
             $surname = $_POST['surname'];
@@ -11,17 +10,17 @@ if(isset($_GET['action']))
             $dateOfBirth = $_POST['dateOfBirth'];
             $razred = $_POST['razred'];
             $odjeljenje = $_POST['odjeljenje'];
-    
+
             $query = "INSERT INTO ucenici(name, surname, parentsName, dateOfBirth, razred, odjeljenje) VALUES('$name', '$surname', '$parentsName', '$dateOfBirth', '$razred', '$odjeljenje')";
             $query_run = mysqli_query($conn, $query);
-        break;
+
+            header("Location: ../ucenici.php?succes=ucenikCreated");
+            break;
     }
 }
-
-function getAllUcenici($conn){
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+function getAllUcenici()
+{
+    global $conn;
 
     $sql = "SELECT * FROM ucenici";
     $result = $conn->query($sql);

@@ -20,9 +20,9 @@ require_once('includes/php/head.php');
 </div>
 
 <div class="container">
-<?php
+    <?php
     require_once('components/uceniciTable.php');
-?>
+    ?>
 </div>
 
 <!-- JS -->

@@ -1,7 +1,6 @@
 <?php
-    require('api/database.php');
-    require('api/ucenik.php');
-    $ucenici = getAllUcenici($conn);
+require('api/ucenik.php');
+$ucenici = getAllUcenici();
 ?>
 
 <table id="myTable" class="display">
@@ -14,23 +13,40 @@
             <th>Date of birth</th>
             <th>Razred</th>
             <th>Odjeljenje</th>
+            <th>Printaj</th>
         </tr>
     </thead>
     <tbody>
         <?php
-        if($ucenici)
-        {
-            foreach($ucenici as $id => $ucenik){
+        if ($ucenici) {
+            foreach ($ucenici as $id => $ucenik) {
                 $dateOfBirth = date('d/m/Y', strtotime($ucenik['dateOfBirth']));
-                echo "<tr>";
-                echo "<td>" . $id+1 . "</td>";
-                echo "<td>" . $ucenik['name'] . "</td>";
-                echo "<td>" . $ucenik['surname'] . "</td>";
-                echo "<td>" . $ucenik['parentsName'] . "</td>";
-                echo "<td>" . $dateOfBirth . "</td>";
-                echo "<td>" . $ucenik['razred'] . "</td>";
-                echo "<td>" . $ucenik['odjeljenje'] . "</td>";
-                echo "</tr>";
+                ?>
+                <tr>
+                    <td>
+                        <?php echo $id + 1 ?>
+                    </td>
+                    <td>
+                        <?php echo $ucenik['name'] ?>
+                    </td>
+                    <td>
+                        <?php echo $ucenik['surname'] ?>
+                    </td>
+                    <td>
+                        <?php echo $ucenik['parentsName'] ?>
+                    </td>
+                    <td>
+                        <?php echo $dateOfBirth ?>
+                    </td>
+                    <td>
+                        <?php echo $ucenik['razred'] ?>
+                    </td>
+                    <td>
+                        <?php echo $ucenik['odjeljenje'] ?>
+                    </td>
+                    <td><button class="btn btn-light"><i class="fa fa-print"></i></button></td>
+                </tr>
+                <?php
             }
         }
         ?>
