@@ -21,6 +21,7 @@ $ucenici = getAllUcenici();
         if ($ucenici) {
             foreach ($ucenici as $id => $ucenik) {
                 $dateOfBirth = date('d/m/Y', strtotime($ucenik['dateOfBirth']));
+                $href='printaj.php?name=' . $ucenik['name'] . '&surname=' . $ucenik['surname'] . '&parentsName=' . $ucenik['parentsName'] . '&razred=' . $ucenik['razred'] . '&dateOfBirth=' . $dateOfBirth;
                 ?>
                 <tr>
                     <td>
@@ -44,7 +45,7 @@ $ucenici = getAllUcenici();
                     <td>
                         <?php echo $ucenik['odjeljenje'] ?>
                     </td>
-                    <td><button class="btn btn-light"><i class="fa fa-print"></i></button></td>
+                    <td><a href="<?php echo $href;?>"><button class="btn btn-light"><i class="fa fa-print"></i></button></a></td>
                 </tr>
                 <?php
             }

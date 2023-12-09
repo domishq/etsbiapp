@@ -1,5 +1,6 @@
 <?php
 require_once('includes/php/head.php');
+require_once('components/sidebar.php');
 ?>
 
 <section class="my-5">

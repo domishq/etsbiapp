@@ -27,6 +27,3 @@
         </div>
     </div>
     <div class="hide aplikacija">
-        <?php
-        require_once('components/sidebar.php');
-        ?>
