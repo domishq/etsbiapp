@@ -1,0 +1,14 @@
+<?php
+require_once('includes/php/head.php');
+require_once('components/sidebar.php');
+?>
+
+<!-- JS -->
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+
+<?php
+require_once('includes/php/foot.php'); ?>

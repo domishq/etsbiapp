@@ -4,6 +4,15 @@
       <p style="font-size: 20px;color:white;font-weight:900;">ETSBI</p>
     </ul>
     <ul class="sidebar-menu">
+      <li class="sidebar-item" id="sidebarIndex">
+        <div class="linkSelector">
+          <img src="includes/img/icons/active.png" alt="active">
+        </div>
+        <a href="index.php" class="sidebar-link">
+          <i class="fa fa-desktop"></i>
+          <span>dashboard</span>
+        </a>
+      </li>
       <li class="sidebar-item" id="sidebarUsers">
         <div class="linkSelector">
           <img src="includes/img/icons/active.png" alt="active">

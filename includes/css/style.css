@@ -12,3 +12,9 @@
 table {
   border-spacing: 12px;
 }
+
+@media print {
+  .onPrintHide {
+    display: none !important;
+  }
+}
