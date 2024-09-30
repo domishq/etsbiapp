@@ -2,20 +2,24 @@
 require_once('includes/php/head.php');
 require_once('components/sidebar.php');
 ?>
-
-<div class="container">
-    <div class="row">
-        <div class="col d-flex justify-content-end">
-            <a href="addUcenik.php"><button class="btn btn-primary" type="button">Add</button></a>
+<section class="my-5">
+    <div class="container my-5">
+        <div class="row">
+            <div class="col">
+                <h1>Ucenici</h1>
+            </div>
         </div>
+        <hr class="mb-5 mt-2">
+        <div class="row">
+            <div class="col d-flex justify-content-end">
+                <a href="addUcenik.php"><button class="btn btn-primary addButton" type="button">Add</button></a>
+            </div>
+        </div>
+        <?php
+        require_once('components/uceniciTable.php');
+        ?>
     </div>
-</div>
-
-<div class="container">
-    <?php
-    require_once('components/uceniciTable.php');
-    ?>
-</div>
+</section>
 
 <!-- JS -->
 <script>

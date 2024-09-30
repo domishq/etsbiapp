@@ -7,8 +7,7 @@ $users = getAllUsers();
     <thead>
         <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Surname</th>
+            <th>User</th>
             <th>Username</th>
         </tr>
     </thead>
@@ -16,14 +15,25 @@ $users = getAllUsers();
         <?php
         if ($users) {
             foreach ($users as $id => $user) {
-                echo "<tr>";
-                echo "<td>" . $id + 1 . "</td>";
-                echo "<td>" . $user['name'] . "</td>";
-                echo "<td>" . $user['surname'] . "</td>"; // This column has a static value for demonstration
-                echo "<td>" . $user['username'] . "</td>"; // This column also has a static value for demonstration
-                echo "</tr>";
+        ?>
+                <tr class="clickable-row" data-href="editUser.php?id=<?php echo $user['user_id'] ?>">
+                    <td><?php echo $id + 1 ?></td>
+                    <td><?php echo $user['surname'] . ', ' . $user['name'] ?></td>
+                    <td><?php echo $user['username'] ?></td>
+                </tr>
+        <?php
             }
         }
         ?>
     </tbody>
 </table>
+
+<script>
+    $(document).ready(function() {
+        $(".clickable-row").click(function() {
+            window.location = $(this).data("href");
+        });
+
+        $('#myTable').DataTable();
+    });
+</script>

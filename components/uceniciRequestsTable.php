@@ -1,6 +1,6 @@
 <?php
-require('api/ucenik.php');
-$ucenici = getAllUcenici();
+require('api/zahtjev.php');
+$ucenici = getAllUceniciRequests();
 ?>
 
 <table id="myTable" class="display nowrap" cellspacing="0" width="100%">
@@ -10,8 +10,7 @@ $ucenici = getAllUcenici();
             <th>Ucenik</th>
             <th>Parents name</th>
             <th>Date of birth</th>
-            <th>Razred</th>
-            <th>Odjeljenje</th>
+            <th>Kreirano</th>
             <th>Printaj</th>
         </tr>
     </thead>
@@ -26,8 +25,7 @@ $ucenici = getAllUcenici();
                     <td><?php echo $ucenik['surname'] . ', ' . $ucenik['name'] ?></td>
                     <td><?php echo $ucenik['parentsName'] ?></td>
                     <td><?php echo $dateOfBirth ?></td>
-                    <td><?php echo $ucenik['razred'] ?></td>
-                    <td><?php echo $ucenik['odjeljenje'] ?></td>
+                    <td><?php echo $ucenik['createdAt'] ?></td>
                     <td><a href="printaj.php?ucenikId=<?php echo $ucenik['id'] ?>"><button class="btn btn-light"><i class="fa fa-print"></i></button></a></td>
                 </tr>
         <?php

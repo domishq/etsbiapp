@@ -33,7 +33,7 @@ if (isset($_GET['action'])) {
                     $rowCount = mysqli_stmt_num_rows($stmt);
 
                     if ($rowCount > 0) {
-                        header("Location: ../registerNewUser.php?error=usernametaken");
+                        header("Location: ../users.php?error=usernametaken");
                         exit();
                     } else {
                         $sql = "INSERT INTO users(username, password, name, surname) VALUES(?, ?, ?, ?);";
@@ -42,14 +42,14 @@ if (isset($_GET['action'])) {
 
 
                         if (!mysqli_stmt_prepare($stmt, $sql) && !mysqli_stmt_prepare($stmt2, $sql2)) {
-                            header("Location: ../registerNewUser.php?error=sqlerror");
+                            header("Location: ../users.php?error=sqlerror");
                             exit();
                         } else {
                             $hashedPass = password_hash($password, PASSWORD_DEFAULT);
                             mysqli_stmt_bind_param($stmt, "ssss", $username, $hashedPass, $name, $surname);
                             mysqli_stmt_execute($stmt);
 
-                            header("Location: ../index.php?succes=registered");
+                            header("Location: ../users.php?succes=userAdded");
                             exit();
                         }
 
@@ -60,6 +60,113 @@ if (isset($_GET['action'])) {
 
             mysqli_close($conn);
             break;
+
+    case 'login':
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        if(empty($username) || empty($password))
+        {
+            header("Location: ../signIn.php?error=emptyfields");
+            exit();    
+        }
+
+        else
+        {
+            $sql = "SELECT * FROM users WHERE username = ?";
+            $stmt = mysqli_stmt_init($conn);
+
+            if(!mysqli_stmt_prepare($stmt, $sql))
+            {
+                header("Location: ../signIn.php?error=sqlerror");
+                exit(); 
+            }
+
+            else
+            {
+                mysqli_stmt_bind_param($stmt, "s", $username);
+                mysqli_stmt_execute($stmt);
+                $result = mysqli_stmt_get_result($stmt);
+
+                if($row = mysqli_fetch_assoc($result))
+                {
+                    $passCheck = password_verify($password, $row['password']);
+
+                    var_dump($passCheck);
+                    echo $row['username'] . '  ' . $row['user_id'] . '<br>';
+                    if(!$passCheck)
+                    {
+                        header("Location: ../signIn.php?error=wrongpass");
+                        exit();  
+                    }
+
+                    else if($passCheck)
+                    {
+                        session_start();
+                        $_SESSION['id'] = $row['user_id'];
+                        $_SESSION['username'] = $row['username'];
+                        $_SESSION['name'] = $row['name'];
+                        $_SESSION['surname'] = $row['surname'];
+                        header("Location: ../index.php?success=loggedin");
+                        exit(); 
+                    }
+                    else
+                    {
+                        header("Location: ../index.php?error=wrongpass");
+                        exit(); 
+                    }
+                }
+
+                else
+                {
+                    header("Location: ../index.php?error=nouser");
+                    exit(); 
+                }
+            }
+        }
+    break;
+            
+        case 'getUserById':
+            if(isset($_GET['userId'])) {
+                $userId = $_GET['userId'];
+                $user = getUserById($userId);
+                if($user) {
+                    echo json_encode($user);
+                } else {
+                    echo json_encode(array('error' => 'User not found')); 
+                }
+            } else {
+                echo json_encode(array('error' => 'User ID not provided'));
+            }
+        break;
+
+        case 'updateUser':
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $userId = $_POST['userId'];
+                $name = $_POST['name'];
+                $surname = $_POST['surname'];
+                $username = $_POST['username'];
+                
+                $success = updateUser($userId, $name, $surname, $username);
+                
+                if ($success) {
+                    echo json_encode(array('message' => 'User updated successfully'));
+                } else {
+                    echo json_encode(array('error' => 'Failed to update user'));
+                }
+            } else {
+                echo json_encode(array('error' => 'Invalid request method'));
+            }
+            break;
+        
+        case "signOut":
+            session_start();
+            
+            $_SESSION = array();
+            
+            session_destroy();
+            
+            header("Location: ../signIn.php");
+            exit();
     }
 }
 
@@ -78,6 +185,48 @@ function getAllUsers()
         return $users;
     } else {
         return array();
+    }
+}
+
+function countUsers()
+{
+    global $conn;
+
+    $sql = "SELECT COUNT(*) AS total_users FROM users";
+    $result = $conn->query($sql);
+
+    if ($result && $result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        return $row['total_users'];
+    } else {
+        return 0;
+    }
+}
+
+function getUserById($userId)
+{
+    global $conn;
+
+    $sql = "SELECT * FROM users WHERE user_id = $userId";
+    $result = $conn->query($sql);
+
+    if ($result && $result->num_rows > 0) {
+        return $result->fetch_assoc();
+    } else {
+        return null;
+    }
+}
+
+function updateUser($userId, $name, $surname, $username)
+{
+    global $conn;
+
+    $sql = "UPDATE users SET name = '$name', surname = '$surname', username = '$username' WHERE user_id = $userId";
+
+    if ($conn->query($sql) === TRUE) {
+        return true;
+    } else {
+        return false;
     }
 }
 

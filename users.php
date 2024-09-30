@@ -2,25 +2,22 @@
 require_once('includes/php/head.php');
 require_once('components/sidebar.php');
 ?>
-
-<section class="my-5">
-    <div class="container">
-        <form class="addUserForm" action="api/user.php?action=createUser" method="post">
-            <input type="text" placeholder="Name" name="name">
-            <input type="text" placeholder="Surname" name="surname">
-            <input type="text" placeholder="Username" name="username">
-            <input type="password" placeholder="Password" name="password">
-            <input type="password" placeholder="Confirm password" name="confirmPassword">
-            <button type="submit" name="submit">Submit</button>
-        </form>
-    </div>    
-</section>
-
 <section class="my-5">
     <div class="container my-5">
-    <?php
-        require_once('components/userTable.php');
-    ?>
+        <div class="row">
+            <div class="col">
+                <h1>Users</h1>
+            </div>
+        </div>
+        <hr class="mb-5 mt-2">
+        <div class="row">
+            <div class="col d-flex justify-content-end">
+                <a href="addUser.php"><button class="btn btn-primary addButton" type="button">Add</button></a>
+            </div>
+        </div>
+        <?php
+            require_once('components/userTable.php');
+        ?>
     </div>
 </section>
 

@@ -3,7 +3,7 @@ $("#aplikacija").hide();
 $(document).ready(() => {
   const currentPage = window.location.href;
 
-  const pagesToCheck = ["users", "ucenici", "index"];
+  const pagesToCheck = ["users", "ucenici", "index", "uvjerenja", "zahtjevi"];
 
   pagesToCheck.forEach(function (page) {
     if (currentPage.includes(page)) {

@@ -21,7 +21,7 @@ body {
 @media (min-width: 48em) {
   .content {
     padding-top: 1em;
-    padding-left: 207px;
+    padding-left: 256px;
   }
 }
 
@@ -45,6 +45,7 @@ body {
 .sidebar-item {
   display: flex;
   align-items: center;
+  transition: background-color 0.3s ease;
 }
 
 .linkSelector {
@@ -52,7 +53,7 @@ body {
   margin-left: 10px;
 }
 
-.sidebar-item a {
+.sidebar-item .sidebar-link {
   display: inline-block;
   height: 64px;
   line-height: 64px;
@@ -61,6 +62,31 @@ body {
   color: white;
   padding: 0 16px;
   text-decoration: none;
+}
+
+.sidebar-hiddenActionLink{
+  font-size: 20px;
+  color: rgb(177, 177, 177);
+  text-decoration: none;
+}
+
+.sidebar-item .sidebar-hiddenUl {
+  display: none;
+  transition: all 0.5s ease;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  list-style: none;
+}
+
+.sidebar-item:hover{
+  background-color: #3b3b3b;
+}
+
+.sidebar-item:hover .sidebar-hiddenUl {
+  display: block;
+  opacity: 1;
+  max-height: 1000px;
 }
 
 /*.sidebar-item span {

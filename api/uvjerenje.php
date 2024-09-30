@@ -3,21 +3,17 @@ include_once 'database.php';
 if (isset($_GET['action'])) {
     $action = $_GET['action'];
     switch ($action) {
-        case 'createUcenik':
-            $name = $_POST['name'];
-            $surname = $_POST['surname'];
-            $parentsName = $_POST['parentsName'];
-            $dateOfBirth = $_POST['dateOfBirth'];
-            $razred = $_POST['razred'];
-            $odjeljenje = $_POST['odjeljenje'];
+        case 'createUvjerenje':
+            $ucenikId = $_POST['ucenikId'];
+            //$userId = $_SESSION['userId'];
 
-            $query = "INSERT INTO ucenici(name, surname, parentsName, dateOfBirth, razred, odjeljenje) VALUES('$name', '$surname', '$parentsName', '$dateOfBirth', '$razred', '$odjeljenje')";
+            $query = "INSERT INTO uvjerenja(ucenikId) VALUES('$ucenikId')";
             $query_run = mysqli_query($conn, $query);
 
-            header("Location: ../ucenici.php?succes=ucenikCreated");
+            header("Location: ../uvjerenja.php?succes=uvjerenjeIsprintano");
             break;
 
-        case 'getUcenikById':
+        /*case 'getUcenikById':
             if(isset($_GET['ucenikId'])) {
                 $ucenikId = $_GET['ucenikId'];
                 $ucenik = getUcenikById($ucenikId);
@@ -30,51 +26,47 @@ if (isset($_GET['action'])) {
                 echo json_encode(array('error' => 'Ucenik ID not provided'));
             }
         break;
-
-        case 'getAllUcenici':
-            $ucenici = getAllUcenici();
-            echo json_encode($ucenici);
+        */
+        case 'getAllUvjerenja':
+            $uvjerenja = getAllUvjerenja();
+            echo json_encode($uvjerenja);
         break;
     }
 }
-
-function getAllUcenici()
+function getAllUvjerenja()
 {
     global $conn;
 
-    $sql = "SELECT u.*
-    FROM ucenici u
-    LEFT JOIN zahtjev z ON u.id = z.ucenikId
-    WHERE z.ucenikId IS NULL OR z.isApproved = 1;";
+    $sql = "SELECT * FROM uvjerenja";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        $ucenici = array();
+        $uvjerenja = array();
         while ($row = $result->fetch_assoc()) {
-            $ucenici[] = $row;
+            $uvjerenja[] = $row;
         }
-        return $ucenici;
+        return $uvjerenja;
     } else {
         return array();
     }
 }
 
-function countUcenici()
+function countUvjerenja()
 {
     global $conn;
 
-    $sql = "SELECT COUNT(*) AS total_ucenici FROM ucenici";
+    $sql = "SELECT COUNT(*) AS total_uvjerenja FROM uvjerenja";
     $result = $conn->query($sql);
 
     if ($result && $result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        return $row['total_ucenici'];
+        return $row['total_uvjerenja'];
     } else {
         return 0;
     }
 }
 
-function getUcenikById($ucenikId)
+/*function getUcenikById($ucenikId)
 {
     global $conn;
 
@@ -86,4 +78,4 @@ function getUcenikById($ucenikId)
     } else {
         return null;
     }
-}
+}*/
