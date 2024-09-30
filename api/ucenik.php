@@ -18,23 +18,42 @@ if (isset($_GET['action'])) {
             break;
 
         case 'getUcenikById':
-            if(isset($_GET['ucenikId'])) {
+            if (isset($_GET['ucenikId'])) {
                 $ucenikId = $_GET['ucenikId'];
                 $ucenik = getUcenikById($ucenikId);
-                if($ucenik) {
+                if ($ucenik) {
                     echo json_encode($ucenik);
                 } else {
-                    echo json_encode(array('error' => 'Ucenik not found')); 
+                    echo json_encode(array('error' => 'Ucenik not found'));
                 }
             } else {
                 echo json_encode(array('error' => 'Ucenik ID not provided'));
             }
-        break;
+            break;
 
         case 'getAllUcenici':
             $ucenici = getAllUcenici();
             echo json_encode($ucenici);
-        break;
+            break;
+
+        case 'updateUcenik':
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $ucenikId = $_POST['ucenikId'];
+                $name = $_POST['name'];
+                $surname = $_POST['surname'];
+                $parentsName = $_POST['parentsName'];
+
+                $success = updateUcenik($ucenikId, $name, $surname, $parentsName);
+
+                if ($success) {
+                    echo json_encode(array('message' => 'User updated successfully'));
+                } else {
+                    echo json_encode(array('error' => 'Failed to update user'));
+                }
+            } else {
+                echo json_encode(array('error' => 'Invalid request method'));
+            }
+            break;
     }
 }
 
@@ -42,10 +61,8 @@ function getAllUcenici()
 {
     global $conn;
 
-    $sql = "SELECT u.*
-    FROM ucenici u
-    LEFT JOIN zahtjev z ON u.id = z.ucenikId
-    WHERE z.ucenikId IS NULL OR z.isApproved = 1;";
+    $sql = "SELECT *
+    FROM ucenici";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -85,5 +102,18 @@ function getUcenikById($ucenikId)
         return $result->fetch_assoc();
     } else {
         return null;
+    }
+}
+
+function updateUcenik($ucenikId, $name, $surname, $parentsName)
+{
+    global $conn;
+
+    $sql = "UPDATE ucenici SET name = '$name', surname = '$surname', parentsName = '$parentsName' WHERE id = $ucenikId";
+
+    if ($conn->query($sql) === TRUE) {
+        return true;
+    } else {
+        return false;
     }
 }

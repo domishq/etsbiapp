@@ -1,21 +1,24 @@
 <?php
 require_once('includes/php/head.php');
 
-if(isset($_GET['ucenikId']))
-{
-    echo '<input type="hidden" id="ucenikId" value=' . $_GET['ucenikId'] . '>';
+if (isset($_GET['svrhe'])) {
+    echo '<input type="hidden" id="svrhe" value=' . $_GET['svrhe'] . '>';
 }
-else
-    {?>
+
+if (isset($_GET['ucenikId'])) {
+    echo '<input type="hidden" id="ucenikId" value=' . $_GET['ucenikId'] . '>';
+} else { ?>
     <div class="onPrintHide">
         <label for="fileInput" class="drop-container onPrintHide" id="dropcontainer">
-          <span class="drop-title">Drop files here</span>
-          or
-          <input type="file" id="fileInput" accept=".xlsx, .xls, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
+            <span class="drop-title">Drop files here</span>
+            or
+            <input type="file" id="fileInput"
+                accept=".xlsx, .xls, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                required>
         </label>
     </div>
     <?php
-    }
+}
 ?>
 
 <div id="displayContent">
@@ -23,7 +26,7 @@ else
 </div>
 
 <?php
-    //include('includes/php/uvjerenjeTemplate.php');
+//include('includes/php/uvjerenjeTemplate.php');
 ?>
 
 <div class="buttons mt-5 onPrintHide">
@@ -41,48 +44,50 @@ else
         });
     });
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         var ucenikId = $('#ucenikId').val();
-        
+        var svrheIds = $('#svrhe').val();
+
         $.ajax({
-        url: 'api/ucenik.php?action=getUcenikById&ucenikId=' + ucenikId,
-        method: 'GET',
-        success: function(response) {
-            const ucenik = JSON.parse(response);
-            //const raz = intToRom(ucenik.razred);
+            url: 'api/ucenik.php?action=getUcenikById&ucenikId=' + ucenikId,
+            method: 'GET',
+            success: function (response) {
+                const ucenik = JSON.parse(response);
+                //const raz = intToRom(ucenik.razred);
 
-           /* $('.name').text(ucenik.name);
-            $('.surname').text(ucenik.surname);
-            $('.parentsName').text(ucenik.parentsName);
-            $('.city').text(ucenik.city);
-            $('.razred').text(raz.rom);
-            $('.razTxt').text(raz.txt);
-            $('.dateOfBirth').text(reformatDate(ucenik.dateOfBirth));*/
+                /* $('.name').text(ucenik.name);
+                 $('.surname').text(ucenik.surname);
+                 $('.parentsName').text(ucenik.parentsName);
+                 $('.city').text(ucenik.city);
+                 $('.razred').text(raz.rom);
+                 $('.razTxt').text(raz.txt);
+                 $('.dateOfBirth').text(reformatDate(ucenik.dateOfBirth));*/
 
-            // After successfully getting the data, trigger the second AJAX call
-            $.ajax({
-                url: 'includes/php/uvjerenjeTemplate.php',
-                method: 'POST',
-                data: {
-                    name: ucenik.name,
-                    surname: ucenik.surname,
-                    dateOfBirth: ucenik.dateOfBirth,
-                    parentsName: ucenik.parentsName,
-                    razred: ucenik.razred
-                },
-                success: function(response) {
-                    $('#displayContent').append(response);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error executing PHP script:', error);
-                }
-            });
-        },
-        error: function(xhr, status, error) {
-            console.log(xhr.responseText);
-            console.log(status);
-            console.log(error);
-        }
+                // After successfully getting the data, trigger the second AJAX call
+                $.ajax({
+                    url: 'includes/php/uvjerenjeTemplate.php',
+                    method: 'POST',
+                    data: {
+                        name: ucenik.name,
+                        surname: ucenik.surname,
+                        dateOfBirth: ucenik.dateOfBirth,
+                        parentsName: ucenik.parentsName,
+                        razred: ucenik.razred,
+                        svrhe: svrheIds
+                    },
+                    success: function (response) {
+                        $('#displayContent').append(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error executing PHP script:', error);
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.responseText);
+                console.log(status);
+                console.log(error);
+            }
         });
         /*if(ucenikId==0)
         {
@@ -107,12 +112,12 @@ else
         }*/
     });
 
-    $(document).ready(function() {
-        $('#fileInput').change(function(e) {
+    $(document).ready(function () {
+        $('#fileInput').change(function (e) {
             var file = e.target.files[0];
             var reader = new FileReader();
 
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 var data = new Uint8Array(e.target.result);
                 var workbook = XLSX.read(data, { type: 'array' });
 
@@ -121,22 +126,22 @@ else
 
                 var jsonData = XLSX.utils.sheet_to_json(sheet);
 
-                jsonData.forEach((row, index)=>{
+                jsonData.forEach((row, index) => {
                     $.ajax({
                         url: 'includes/php/uvjerenjeTemplate.php',
                         method: 'POST',
-                        data: 
-                        { 
-                            name: row['Ime'], 
+                        data:
+                        {
+                            name: row['Ime'],
                             surname: row['Prezime'],
                             dateOfBirth: row['Datum rođenja (dan.mjesec.godina)'],
                             parentsName: row['Ime roditelja'],
                             razred: row['Razred'],
                         },
-                        success: function(response) {
+                        success: function (response) {
                             $('#displayContent').append(response);
                         },
-                        error: function(xhr, status, error) {
+                        error: function (xhr, status, error) {
                             console.error('Error executing PHP script:', error);
                         }
                     });
@@ -147,36 +152,51 @@ else
         });
     });
 
+    function reformatDate(dateString) {
+        var dateParts = dateString.split('-');
 
-function populateData(ucenikId) {
-    $.ajax({
-        url: 'api/ucenik.php?action=getUcenikById&ucenikId=' + ucenikId,
-        method: 'GET',
-        success: function(response) {
-            const ucenik = JSON.parse(response);
-            const raz = intToRom(ucenik.razred);
+        var year = dateParts[0];
+        var month = dateParts[1];
+        var day = dateParts[2];
 
-            $('.name').text(ucenik.name);
-            $('.surname').text(ucenik.surname);
-            $('.parentsName').text(ucenik.parentsName);
-            $('.city').text(ucenik.city);
-            $('.razred').text(raz.rom);
-            $('.razTxt').text(raz.txt);
-            $('.dateOfBirth').text(reformatDate(ucenik.dateOfBirth));
-        },
-        error: function(xhr, status, error) {
-            console.log(xhr.responseText);
-            console.log(status);
-            console.log(error);
-        }
+        day = parseInt(day, 10);
+        month = parseInt(month, 10);
+
+        return day + '.' + month + '.' + year;
+    }
+
+
+    function populateData(ucenikId) {
+        $.ajax({
+            url: 'api/ucenik.php?action=getUcenikById&ucenikId=' + ucenikId,
+            method: 'GET',
+            success: function (response) {
+                const ucenik = JSON.parse(response);
+                const raz = intToRom(ucenik.razred);
+
+                $('.name').text(ucenik.name);
+                $('.surname').text(ucenik.surname);
+                $('.parentsName').text(ucenik.parentsName);
+                $('.city').text(ucenik.city);
+                $('.razred').text(raz.rom);
+                $('.razTxt').text(raz.txt);
+                $('.dateOfBirth').text(reformatDate(ucenik.dateOfBirth));
+
+                console.log(ucenik.dateOfBirth)
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.responseText);
+                console.log(status);
+                console.log(error);
+            }
+        });
+    }
+
+    $('#ucenikId').change(function () {
+        var selectedUcenikId = $(this).val();
+        if (selectedUcenikId !== "0")
+            populateData(selectedUcenikId);
     });
-}
-
-$('#ucenikId').change(function() {
-    var selectedUcenikId = $(this).val();
-    if (selectedUcenikId !== "0")
-        populateData(selectedUcenikId);
-});
 
 </script>
 

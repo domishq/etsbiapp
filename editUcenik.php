@@ -23,8 +23,9 @@
         <hr class="mb-5 mt-2">
         <div class="row">
             <div class="col-5 m-auto">
-                <form class="editUcenikForm" id="editUcenikForm" action="api/ucenik.php?action=editUcenik" method="post">
-                    <input type="hidden" name="ucenikId" id="ucenikId" value="<?php echo $_GET['id'] ;?>">
+                <form class="editUcenikForm" id="editUcenikForm" action="api/ucenik.php?action=editUcenik"
+                    method="post">
+                    <input type="hidden" name="ucenikId" id="ucenikId" value="<?php echo $_GET['id']; ?>">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
                         <input type="text" class="form-control" id="name" name="name">
@@ -52,31 +53,33 @@
 
 <!-- JS -->
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         var ucenikId = $('#ucenikId').val();
         $.ajax({
             url: 'api/ucenik.php?action=getUcenikById&ucenikId=' + ucenikId,
             method: 'GET',
-            success: function(response) {
+            success: function (response) {
                 var ucenik = JSON.parse(response);
                 $('#name').val(ucenik.name);
                 $('#surname').val(ucenik.surname);
                 $('#parentsName').val(ucenik.parentsName);
                 console.log(response);
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.log(xhr.responseText);
                 console.log(status);
                 console.log(error);
             }
         });
 
-        $('#saveButton').click(function(e) {
+        $('#saveButton').click(function (e) {
             e.preventDefault();
             var ucenikId = $('#ucenikId').val();
             var name = $('#name').val();
             var surname = $('#surname').val();
             var parentsName = $('#parentsName').val();
+
+            console.log(ucenikId, name, surname, parentsName)
 
             $.ajax({
                 url: 'api/ucenik.php?action=updateUcenik',
@@ -87,13 +90,13 @@
                     surname: surname,
                     parentsName: parentsName
                 },
-                success: function(response) {
+                success: function (response) {
                     var myToastEl = document.getElementById('liveToast');
                     var bsToast = new bootstrap.Toast(myToastEl);
                     bsToast.show();
                     console.log('success');
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.log(xhr.responseText);
                     console.log(status);
                     console.log(error);

@@ -30,7 +30,7 @@ if (isset($_GET['action'])) {
         case 'getAllUvjerenja':
             $uvjerenja = getAllUvjerenja();
             echo json_encode($uvjerenja);
-        break;
+            break;
     }
 }
 function getAllUvjerenja()
@@ -63,6 +63,57 @@ function countUvjerenja()
         return $row['total_uvjerenja'];
     } else {
         return 0;
+    }
+}
+
+function getAllUvjerenjaSvrhe()
+{
+    global $conn;
+
+    $sql = "SELECT * FROM uvjerenja_svrhe";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $uvjerenja_svrhe = array();
+        while ($row = $result->fetch_assoc()) {
+            $uvjerenja_svrhe[] = $row;
+        }
+        return $uvjerenja_svrhe;
+    } else {
+        return array();
+    }
+}
+
+function getUvjerenjaSvrheByIds($svrheIdsString)
+{
+    global $conn;
+
+    // Explode the string to get individual IDs as an array
+    $idsArray = explode(',', $svrheIdsString);
+
+    // Sanitize input: ensure each ID is an integer to prevent SQL injection
+    $idsArray = array_map('intval', $idsArray);
+
+    // If no valid IDs are provided, return an empty array
+    if (empty($idsArray)) {
+        return array();
+    }
+
+    // Convert the array back to a comma-separated string for the SQL query
+    $idsList = implode(',', $idsArray);
+
+    // Construct the SQL query using the IN clause to fetch records with the given IDs
+    $sql = "SELECT * FROM uvjerenja_svrhe WHERE id IN ($idsList)";
+    $result = $conn->query($sql);
+
+    if ($result && $result->num_rows > 0) {
+        $uvjerenja_svrhe = array();
+        while ($row = $result->fetch_assoc()) {
+            $uvjerenja_svrhe[] = $row;
+        }
+        return $uvjerenja_svrhe;
+    } else {
+        return array(); // Return an empty array if no records are found
     }
 }
 
